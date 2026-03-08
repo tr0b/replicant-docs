@@ -265,9 +265,15 @@ when code is hot reloaded):
   (main el state))
 ```
 
-To test our new capability we will add a render function for the episode page:
+To test our new capability we will add a render function for the episode page.
+We'll also need a utility function to get the data for an episode given its ID:
 
 ```clj
+(defn get-episode [{:keys [videos]} {:keys [location/params]}]
+  (->> videos
+       (filter (comp #{(:episode/id params)} :episode/id))
+       first))
+
 (defn render-episode [state location]
   [:main
    (if-let [episode (get-episode state location)]

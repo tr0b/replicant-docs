@@ -629,7 +629,19 @@ For our next test, let's place a tic for player x:
 ```
 
 Since the game already knows whose turn it is, we don't need to pass it
-explicitly. Next, we'll place another mark:
+explicitly:
+
+```clj
+(def next-player {:x :o, :o :x})
+
+(defn tic [game y x]
+  (let [player (:next-player game)]
+    (-> game
+        (assoc-in [:tics [y x]] player)
+        (assoc game :next-player (next-player player)))))
+```
+
+Next, we'll test placing another mark:
 
 ```clj
 (testing "O places a tic"
@@ -659,8 +671,6 @@ This test fails because our current implementation allows the o player overwrite
 the x. Not good, let's fix it:
 
 ```clj
-(def next-player {:x :o, :o :x})
-
 (defn tic [game y x]
   (let [player (:next-player game)]
     (if (get-in game [:tics [y x]])
