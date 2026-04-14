@@ -638,7 +638,7 @@ explicitly:
   (let [player (:next-player game)]
     (-> game
         (assoc-in [:tics [y x]] player)
-        (assoc game :next-player (next-player player)))))
+        (assoc-in :next-player (next-player player)))))
 ```
 
 Next, we'll test placing another mark:
